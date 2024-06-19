@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import glob
 import pandas as pd
 import zipfile
 import requests
@@ -15,12 +16,14 @@ class scraperCVM:
         return df
 
     def clearDFP(self):
-        os.remove()
+        files = glob.glob('../dfps/*')
+        for f in files:
+            os.remove(f)
         return 0
 
-    def downloadDFPZIP(self):
+    def downloadDFPZIP(year_start,year_end):
         cvm_dfp_url = 'http://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/'
-        for ano in range(2010,2023):
+        for ano in range(year_start,year_end):
             r = requests.get(cvm_dfp_url+f'dfp_cia_aberta_{ano}.zip')
             open(f"./dfps/dfp_cia_aberta_{ano}.zip","wb").write(r.content)
         return 0
